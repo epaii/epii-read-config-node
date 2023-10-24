@@ -56,14 +56,14 @@ if (argsConfig["epii.config"]) {
 
 
 
-export function getDataByNamespace(data:any,namespace=""){
-    if(namespace.length===0) return data;
-    let out:any = {};
+export function getDataByNamespace(data: any, namespace = "") {
+    if (namespace.length === 0) return data;
+    let out: any = {};
     for (const key in data) {
         if (Object.prototype.hasOwnProperty.call(data, key)) {
-             if(key.startsWith(namespace+".")){
-                out[key.substring((namespace+".").length)] = data[key];
-             }   
+            if (key.startsWith(namespace + ".")) {
+                out[key.substring((namespace + ".").length)] = data[key];
+            }
         }
     }
     return out;
@@ -87,8 +87,22 @@ export function readCurrentDirConfig() {
 }
 
 export function readConfig<T extends Record<string, any>>(defualtConfig: T | any = {}, namespace: string = ""): T {
-    if (projectConfig) Object.assign(defualtConfig, getDataByNamespace(projectConfig,namespace));
-    if (currentDirConfig) Object.assign(defualtConfig, getDataByNamespace(currentDirConfig,namespace));
-    if (argsConfig) Object.assign(defualtConfig, getDataByNamespace(argsConfig,namespace));
+    if (projectConfig) Object.assign(defualtConfig, getDataByNamespace(projectConfig, namespace));
+    if (currentDirConfig) Object.assign(defualtConfig, getDataByNamespace(currentDirConfig, namespace));
+    if (argsConfig) Object.assign(defualtConfig, getDataByNamespace(argsConfig, namespace));
     return defualtConfig;
+}
+
+let defualtConfig: Record<string, any> = readConfig({});
+
+export function getConfig(key: string | null = null, dvalue = null) {
+    if (key === null) return defualtConfig;
+    if (defualtConfig.hasOwnProperty(key)) {
+        return defualtConfig[key];
+    }
+    return dvalue;
+}
+
+export function configContainKey(key: string): boolean {
+    return defualtConfig.hasOwnProperty(key);
 }

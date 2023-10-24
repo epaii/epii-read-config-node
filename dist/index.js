@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.readConfig = exports.readCurrentDirConfig = exports.readProjectConfig = exports.readArgsConfig = exports.getDataByNamespace = exports.getConfigFromDir = void 0;
+exports.configContainKey = exports.getConfig = exports.readConfig = exports.readCurrentDirConfig = exports.readProjectConfig = exports.readArgsConfig = exports.getDataByNamespace = exports.getConfigFromDir = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 let argsConfig = process.argv.splice(2).filter(item => item.startsWith("--")).reduce((o, item, index) => {
@@ -83,3 +83,17 @@ function readConfig(defualtConfig = {}, namespace = "") {
     return defualtConfig;
 }
 exports.readConfig = readConfig;
+let defualtConfig = readConfig({});
+function getConfig(key = null, dvalue = null) {
+    if (key === null)
+        return defualtConfig;
+    if (defualtConfig.hasOwnProperty(key)) {
+        return defualtConfig[key];
+    }
+    return dvalue;
+}
+exports.getConfig = getConfig;
+function configContainKey(key) {
+    return defualtConfig.hasOwnProperty(key);
+}
+exports.configContainKey = configContainKey;
