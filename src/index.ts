@@ -95,7 +95,7 @@ export function readConfig<T extends Record<string, any>>(defualtConfig: T | any
 
 let defualtConfig: Record<string, any> = readConfig({});
 
-export function getConfig(key: string | null = null, dvalue = null) {
+export function getConfig(key: string | null = null, dvalue:string|number|null = null) {
     if (key === null) return defualtConfig;
     if (defualtConfig.hasOwnProperty(key)) {
         return defualtConfig[key];
